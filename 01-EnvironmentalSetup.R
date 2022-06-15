@@ -16,7 +16,9 @@ revnv::restore()
 
 # 4. Check environment again 
 View(installed.packages())
-
+library(knitr)
+library(tinytex)
+library(renv)
  
 # 5. Install libraries manually ----
 # If for some reason the environment was not recreated please install the packages manually
