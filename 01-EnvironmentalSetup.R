@@ -12,7 +12,7 @@ View(installed.packages())
 
 # 3. Restore my working environment ----
 # In the folder that I shared with you there is a renv.lock file. All things being equal running the command below should create a 'library' folder in your working directory which will download and install the exact versions of all packages that I had when I created this tutorial. This is to ensure that we all have the same environment.
-revnv::restore()
+renv::restore()
 
 # 4. Check environment again 
 View(installed.packages())
