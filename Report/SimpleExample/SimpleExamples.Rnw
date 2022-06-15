@@ -1,0 +1,57 @@
+\documentclass{article}
+\begin{document}
+%Basic chunk example
+%-------------------------------------------------------------------------------------
+
+You can type R commands in your \LaTeX{} document which will be processed and their output included in the document:
+
+<<chunk1>>=
+# Create a sequence of numbers
+X = 2:10
+
+# Display basic statistical measures
+summary(X)
+
+@
+%--------------------------------------------------------------------------------
+
+So, the mean of the data is $\Sexpr{mean(X)}$ %Inline command
+
+\clearpage
+%Plots
+%--------------------------------------------------------------------------------
+<<plot1, fig.pos="t", fig.height=4, fig.width=4, fig.cap="First plot">>=
+
+xdata = read.csv(file="data.txt", head=TRUE,sep=" ")
+
+hist(xdata$data, main="Overleaf histogram", xlab="Data")
+
+@
+%--------------------------------------------------------------------------------
+
+The figure \ref{fig:plot1} is simple histogram.
+
+\clearpage
+
+The chunk below will not be printed
+
+<<echo=FALSE, cache=FALSE>>=
+read_chunk("mycode.R")
+@
+
+The code must show up here
+
+<<myrcode2>>=
+
+@
+%--------------------------------------------------------------------------------
+\clearpage
+
+<<>>=
+summary(iris)
+@
+
+
+
+
+\end{document}

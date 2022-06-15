@@ -64,6 +64,8 @@
 
 \usepackage{amsmath,amssymb}
 \usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
 
 % vertical separator macro
 \newcommand{\vsep}{
@@ -103,7 +105,7 @@
 
 
 % Only the first Slide
-\title{Reproducible research: with R, renv and \LaTeX}
+\title{Reproducible Research: with R, Renv and \LaTeX}
 \author{Liberty Mlambo}
 \institute[SB Stats Group]{ Research Assistant:\\ University of Nottingham}
 \date{\today}
@@ -118,277 +120,191 @@
 
 % Índice
 \begin{frame}{Table of Contents}
-    \tableofcontents
+  \tableofcontents
 \end{frame}
 
 % Frame 1
-\section{Background}
-\begin{frame}
+\section{Introduction}
+\subsection{Presenter's Assumptions}
+\begin{frame}{Presenter's Assumptions}
+\begin{itemize}
+\item You have R and RStudio installed (ideally the latest versions)
+\item You know how to install R packages
+\item You have an 'open' mind
+\item You know how to use a computer (Cheesy I know, but very important to mention)
+\end{itemize}
+\end{frame}
+
+
+\subsection{What we will discuss}
+\begin{frame}{Software Links}
   \frametitle{Requirements}
-    We will talk about the following software:
-    \begin{itemize}[<+->]
-      \item R 
-      \item RStudio
-      \item \LaTeX
-      \item tinytex
-      \item renv
-      \item knitr (preinstalled with RStudio)
-      \item R package installation access
-      \item Overleaf
-    \end{itemize}
+  Links to software/packages:
+  \begin{enumerate}%[<+->]
+    \item \href{https://cran.rstudio.com/}{R : https://cran.rstudio.com/}
+    \item \href{https://www.rstudio.com/products/rstudio/download/}{RStudio : https://www.rstudio.com/products/rstudio/download/}
+    \item \href{https://www.latex-project.org/get/}{\LaTeX{} : https://www.latex-project.org/get/}
+    \item \href{https://yihui.org/tinytex/}{TinyTeX : https://yihui.org/tinytex/}
+    \item \href{https://rstudio.github.io/renv/articles/renv.html}{renv : https://rstudio.github.io/renv/articles/renv.html}
+    \item \href{https://yihui.org/knitr/}{knitR : https://yihui.org/knitr/}
+    \item \href{https://www.overleaf.com/}{Overleaf : https://www.overleaf.com/}
+  \end{enumerate}
 \end{frame}
 
-\section{¿Cómo funciona?}
-\subsection{Intuición en general}
-\begin{frame}{Curvas de Nivel}
-    \begin{itemize}
-        \item Conjunto de Nivel: $\ell_{f}(\vec{x}_0)= \{\vec{x}: f(\vec{x}) = f(\vec{x}_0) \}$
-        \item Curva de Nivel: Una parte conexa de $\ell_f(\vec{x}_0)$
-    \end{itemize}
+
+\subsection{Disclaimer}
+\begin{frame}{Disclaimer}
+\begin{quote}
+"If we knew what it was we were doing, it would not be called research, would it?" ... Albert Einstein
+\end{quote}
+\end{frame}
+%Frame 2
+\section{Software/packages}
+\subsection{\LaTeX{}}
+\begin{frame}{What is \LaTeX{}}
+  \begin{itemize}%[<+->]
+    \item \LaTeX{} is a document preparation software developed by Leslie Lamport in the early 1980s\footnote{\href{https://en.wikipedia.org/wiki/LaTeX}{https://en.wikipedia.org/wiki/LaTeX}}.
+    \item \LaTeX{} uses the \TeX{} typesetting system originally designed and written by Donald Knuth\footnote{\href{https://en.wikipedia.org/wiki/TeX}{https://en.wikipedia.org/wiki/TeX}}
+    \item There are various \LaTeX{} distributions for most major operating systems which combine the \LaTeX{} and editors e.g. MacTeX(MacOS), MikTeX(Windows) and Overleaf(Online)
+  \end{itemize}
 \end{frame}
 
-% \begin{frame}{Primera Curva de Nivel}
-%     \begin{figure}
-%         \centering
-%         \includegraphics[width = 0.6\textwidth]{Hourglass-cropped.pdf}
-%         \caption{Función de Himmelblau: $\vec{x}_0 = (3,-2)$}
-%         \label{fig:my_label}
-%     \end{figure}
-% \end{frame}
-% 
-% \begin{frame}{Encontrando Mínimos}
-%     \begin{figure}
-%         \centering
-%         \includegraphics[width = 0.6\textwidth]{FirstSplit-cropped.pdf}
-%         \caption{Función de Himmelblau: $\vec{x}_0 = (3,-2)$}
-%         \label{fig:my_label}
-%     \end{figure}
-% \end{frame}
-% 
-% \begin{frame}
-%   \frametitle{Haz recursión y conquistarás...}
-%   \begin{figure}
-%       \centering
-%       \includegraphics[width = 0.6\textwidth]{FullMethod.pdf}
-%       \caption{Función de Himmelblau: $\vec{x}_0 = (4,4)$}
-%       \label{fig:my_label}
-%   \end{figure}
-% \end{frame}
-% 
-% 
-% \subsection{Siguiendo curvas de nivel}
-% \begin{frame}
-%     \frametitle{Para Seguir una Curva de Nivel}
-%     \begin{block}{Requisitos:}
-%         Introducir un parámetro de tiempo, $t$. Así, $\Phi(t) = (x(t),y(t))$ es la parametrización de la curva de nivel.\\
-%         \vspace{10 pt}
-%         Encontrar una EDO que siga la curva. \\
-%         \vspace{10 pt}
-%         Aplicar un método numérico que siga la EDO
-%     \end{block}
-% \end{frame}
-% 
-% \begin{frame}{Obteniendo una EDO}
-%     Sabemos que $\nabla f(\vec{x})$ y la curva de nivel son perpendiculares.\\
-%     \vspace{10 pt}
-%     Calculamos $\nabla f(\vec{x})$ de manera exacta o con diferencias finitas.\\
-%    \vspace{ 10pt}
-%    Multiplicamos por $A = \begin{pmatrix}
-%    0 & -1 \\
-%    1 & 0
-%    \end{pmatrix}$ para girar $90^{\circ}$\\
-%    \vspace{ 10pt}
-%     Así, $\begin{pmatrix}
-%     \dot{x} \\
-%     \dot{y}
-%     \end{pmatrix}
-%     =
-%     \begin{pmatrix}
-%    0 & -1 \\
-%    1 & 0
-%    \end{pmatrix} \nabla f(\vec{x})$, es la EDO que necesitamos para seguir la curva de nivel.
-% \end{frame}
-% 
-% \begin{frame}{La EDO}
-%    Definimos $H(x) = \begin{pmatrix}
-%    0 & -1 \\
-%    1 & 0
-%    \end{pmatrix} \nabla f(\vec{x})$, y tenemos el siguiente PVI:\\
-%    \vspace{10 pt}
-%    \begin{block}{PVI en cada paso:}
-%    $$\begin{pmatrix}
-%     \dot{x} \\
-%     \dot{y}
-%     \end{pmatrix}
-%     =
-%     \frac{H(\vec{x})}{\max\{1,\left|| \nabla f(\vec{x}(t_i))\right||\}}$$\\
-%     \vspace{3 pt}
-%     $$\vec{x}(0) = \vec{x}(t_i)$$
-%    \end{block}
-% \end{frame}
-% 
-% \begin{frame}{¿Cómo seguir esa EDO?}
-%     \begin{itemize}
-%         \item RK4
-%         \item Trapecio Explícito
-%         \item ¡Muchos más!
-%     \end{itemize}
-% \end{frame}
-% 
-% 
-% 
-% \subsection{Decidiendo qué hacer}
-% 
-% \begin{frame}{Una Medida Importante}
-%     \begin{block}{Para medir la curvatura...}
-%         $\theta_i$ es el ángulo de $\nabla f(\vec{x}_i)$ respecto al eje $x$. 
-%     \end{block}
-%     \begin{figure}
-%     \centering
-%     \includegraphics[width = 0.5\textwidth]{figure31.pdf}
-%     \caption{Midiendo la Curvatura}
-%     \label{fig:my_label}
-% \end{figure}
-% \end{frame}
-% 
-% \begin{frame}{Convexidad y Concavidad}
-%     \begin{block}{Tres opciones:}
-%         \begin{itemize}[<+->]
-%             \item Donde $\theta^{'} > 0$, la curva de nivel es convexa (bien inflada).
-%             \item Donde $\theta^{'} < 0$, la curva de nivel es cóncava (hundida hacia adentro).
-%             \item Donde $\theta^{'} = 0$, la curva de nivel es una línea recta. 
-%         \end{itemize}
-%     \end{block}
-% \end{frame}
-% 
-% \begin{frame}{Ejemplo Ilustrativo}
-%     \begin{columns}
-%     \column{0.5\textwidth}
-%         \begin{figure}
-%             \centering
-%             \includegraphics[width = \textwidth]{FINALIHOPE-cropped.pdf}
-%             \label{fig:my_label}
-%         \end{figure}
-%     \column{0.5\textwidth}
-%         \begin{figure}
-%             \centering
-%             \includegraphics[width = \textwidth]{Hourglass-cropped.pdf}
-%             \label{dual}
-%         \end{figure}
-%     \end{columns}
-%     \centering{Figura: Una Curva de Nivel y su medida $\theta^{'}$}
-% \end{frame}
-% 
-% \begin{frame}{Recursión por Ruptura}
-% \begin{block}{Def: Picos negativos}
-%     Para una curva de nivel $M_{\vec{x}_0}$, los \emph{Picos Negativos} son aquellos puntos $\vec{x}_i$ donde $\theta^{'}_i$ alcanza un mínimo
-% \end{block}
-%     Si dos Picos Negativos están cerca, creamos una \emph{ruptura}. %Es decir, tomamos $\vec{y}_0$ y $\vec{z}_0$ en lados opuestos de los Picos Negativos, y llamamos recursivamente al método sobre $\vec{y}_0$ y $\vec{z}_0$.
-% \end{frame}
-% 
-% \begin{frame}{Recursión por Ruptura}
-%     \begin{figure}
-%         \centering
-%         \includegraphics[width = 0.6\textwidth]{SiSePudo-cropped.pdf}
-%         \caption{Ruptura}
-%         \label{fig:my_label}
-%     \end{figure}
-% \end{frame}
-% 
-% \begin{frame}{Encontrar el Mínimo}
-%     \begin{block}{Convexidad Global}
-%         Si $\theta^{'}_i>0$ para toda $i$, entonces la curva de nivel es \emph{globalmente convexa.}
-%     \end{block}
-%     \vspace{10 pt}
-%         Si una curva de nivel es globalmente convexa, entonces:\\
-%         \vspace{10 pt}
-%         \begin{columns}
-%         \column{0.4\textwidth}
-%         \begin{block}{¿Está cerca de un mínimo?}
-%           Método de Newton
-%         \end{block}
-%         \column{0.4\textwidth}
-%         \begin{block}{¿Está lejos?}
-%          Bajar el Nivel
-%         \end{block}
-%         \end{columns}
-% \end{frame}
-% 
-% \begin{frame}{Bajar el Nivel}
-%         Sea $L$ la longitud de la curva. Luego, tomamos:\\  $$\vec{y}_0 = \vec{x}_i-kL\frac{\nabla f(\vec{x})}{\left||\nabla f(\vec{x})\right||}$$ 
-%         \vspace{10 pt} 
-%         Aquí, $k$ es un parámetro que representa la proporción de $L$ a avanzar. 
-% \end{frame}
-% 
-% \begin{frame}{Bajar el Nivel}
-%     \begin{figure}
-%         \centering
-%         \includegraphics[width = \textwidth]{Logo.png}
-%         %\caption{Bajando el Nivel sin Convexidad Global}
-%         \label{fig:my_label}
-%     \end{figure}
-% \end{frame}
-% 
-% 
-% \begin{frame}{Esquema General}
-%     \begin{figure}
-%         \centering
-%         \includegraphics[width = 0.75\textwidth]{SplitMethod.pdf}
-%  %       \caption{Método Completo}
-%         \label{fig:my_label}
-%     \end{figure}
-% \end{frame}
-% 
-% \section{Resultados y comentarios}
-% \begin{frame}{Resultados}
-%     \begin{table}[h]
-%     \centering
-%     \caption{Función de Himmelblau: $\vec{x}_0 = (4,4)$}
-%     \begin{tabular}{|c|c|c|}\hline 
-%     Minimos & Minimos estimados & Error  \\
-%     \hline
-%     (3.0,2.0) & (3.0000..., 1.9999...) & 1.7117 e-12\\
-%     (-2.805118, 3.131312) & (-2.805118..., 3.131312...) & 5.3283 e-07\\
-%     (-3.779310, -3.283186) & (-3.779310..., -3.283185...) &  2.5449 e-07\\
-%     (3.584428, -1.848126) & (3.584428..., -1.848126...) & 6.2730 e-07\\
-%     \hline 
-%     \end{tabular}
-%     \label{tab:HimMinima}
-% \end{table}
-% \end{frame}
-% 
-% \begin{frame}{Resultados}
-% \begin{table}[h]
-%     \centering
-%     \caption{Método de la ruptura aplicado a diferentes funciones}
-%     \begin{tabular}{|c|c|c|c|}\hline
-%     Función & $\vec{x}_0$ & Minimos estimados & Error \\
-%     \hline 
-%     Styblinski -Tang    & (4,4) &(-2.9035,-2.9035) & 3.9274e-08\\
-%     Easom  &  (1.6,1.6) &(3.1415,3.1415) & 1.7796e-11\\
-%     Booth  & (0,10) &(0.9999,2.9999) & 1.0422e-09\\
-%     White \& Holst     & (0,0) &(0.9999,0.9999) & 4.2564e-11\\
-%     \hline
-%     \end{tabular}
-%     \label{tab:Various}
-% \end{table}
-% \end{frame}
-% 
-% 
-% \begin{frame}{Comentarios}
-%     \begin{itemize}[<+->]
-%         \item El método requiere funciones suaves y con curvas de nivel cerradas.
-%         \item Aproxima bien los mínimos, aunque algunos parámetros deben ser ajustados para cada función $f$.
-%         \item Tener información parcial sobre el conjunto de nivel ha sido un problema constante.
-%     \end{itemize}
-% \end{frame}
-% 
-% \begin{frame}{Bibliografía}
-% \begin{enumerate}
-%     \item Amir Beck, \emph{Introduction to Nonlinear Optimization - Theory, Algorithms and Applications} MOS-SIAM series on Optimization. SIAM, 2014.\\
-%     \item Andrei Neculai, \emph{An Unconstrained Optimization Test Function Collection} Advanced Modeling and Optimization, Vol. 10, number 1, 2008.\\
-%     \item Jorge Nocedal and Stephen Wright,  \emph{Numerical Optimization}. New York: Springer, 2006.
-% \end{enumerate}
-% \end{frame}
+%Frame 3
+\begin{frame}{Why use \LaTeX{}}
+  Like every piece of software \LaTeX{} has several advantages:
+  \begin{itemize}%[<+->]
+      \item \LaTeX{} is just text; anyone can edit your file\footnote{\href{https://academia.stackexchange.com/questions/5414/what-are-the-advantages-or-disadvantages-of-using-latex-for-writing-scientific-p}{https://academia.stackexchange.com}}
+    \item The document is automatically formated
+    \item Makes beautiful documents
+    \item Very good with math and symbols
+    \item Can intergrate separate PDF documents neatly
+  \end{itemize}
+\end{frame}
 
-\end{document}
+%Frame 4
+\begin{frame}{Cons of \LaTeX{}}
+  Unfortunately \LaTeX{} is not as popular as some 'WYSIWYG' editors like MSWord due to some of the following:
+  \begin{itemize}%[<+->]
+    \item Fairly steep learning curve
+    \item Collaborators unfamiliar with LaTeX will have difficulty reviewing your manuscripts
+    \item Many features require libraries, which you have to find/be made aware of (view changes, etc)
+    \item Layout changes are difficult (i.e., will require time for you to hunt down solution and implement it)\footnote{\href{https://academia.stackexchange.com/questions/5414/what-are-the-advantages-or-disadvantages-of-using-latex-for-writing-scientific-p}{https://academia.stackexchange.com}}
+  \end{itemize}
+\end{frame}
+
+%Frame 5
+\subsection{TinyTeX}
+\begin{frame}{What is TinyTeX}
+\begin{columns}[T] % align columns
+\begin{column}{.48\textwidth}
+TinyTeX\footnote{\href{https://yihui.org/tinytex/}{https://yihui.org/tinytex/}}
+\begin{itemize}
+  \item A custom \LaTeX distribution based on \TeX Live that is small in size but still functions well in most cases. 
+  \item missing packages will just be installed automatically. 
+  \item if you create RMarkdown in PDF then you may have used \LaTeX and tinytex without knowing they existed.
+  \item An R package installed using: \textit{\textbf{install.packages("tinytex")}}
+\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.48\textwidth}
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=4cm]{logo-tinytex}
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
+
+%Frame 6
+\subsection{Renv}
+\begin{frame}{What is Renv}
+\begin{columns}[T] % align columns
+\begin{column}{.48\textwidth}
+renv\footnote{\href{https://rstudio.github.io/renv/articles/renv.html}{https://rstudio.github.io/renv/articles/renv.html}}
+\begin{itemize}
+  \item R dependency and library paths management to isolate your projects.
+  \item renv 'freezes' your project workspace so that your existing workflows in future will just work as they did before
+  \item very important for collaboration(especially with the future you)
+\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.48\textwidth}
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=4cm]{renv}
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
+
+%Frame 7
+\begin{frame}{renv workflow}
+The recomended workflow for renv is\footnote{href{https://rstudio.github.io/renv/articles/renv.html}{Adapted from here}}:
+\begin{itemize}
+\item Call \textit{renv::init()} to initialize a new project-local environment with a private R library,
+
+\item Work in the project as normal, installing and removing new R packages as they are needed in the project,
+
+\item Call \textit{renv::snapshot()} to save the state of the project library to the lockfile (called renv.lock),
+
+
+\item Call \textit{renv::snapshot()} again to save the state of your project library if you change any packages successfully, or call \textit{renv::restore()} to revert to the previous state 
+\end{itemize}
+\end{frame}
+
+\subsection{knitR}
+\begin{frame}{What is knitR}
+\begin{columns}[T] % align columns
+\begin{column}{.48\textwidth}
+knitR\footnote{\href{https://yihui.org/knitr/}{https://yihui.org/knitr/}}
+\begin{itemize}
+  \item knitR is a general-purpose literate programming engine, with lightweight API's designed to give users full control of the output without heavy coding work.
+  \item It is the magic behind RMarkdown document rendering
+  \item knitR 'weaves' \textbf{.R} files into a \textbf{.tex} file then \textbf{.pdf}
+\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.48\textwidth}
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=4cm]{knit-logo}
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
+
+\subsection{Overleaf}
+\begin{frame}{What is Overleaf}
+\begin{columns}[T] % align columns
+\begin{column}{.48\textwidth}
+Overleaf\footnote{\href{https://www.overleaf.com/edu/nottingham}{https://www.overleaf.com}}
+\begin{itemize}
+  \item Online \LaTeX editor.
+  \item Collaboration features
+  \item Track changes
+  \item GitHub integration
+  \item Basic R integration \textit{(uses only base R libraries)}
+  \item Easy learning with integrated documenation
+  \item It is the 'RStudio' of \LaTeX{} in my opinion
+\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.48\textwidth}
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=4cm]{overleaf_wide_colour_light_bg}
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
+
+\section{Code Demontrations}
+\subsection{Basic Code Block}
+\begin{frame}{Basic Code Block}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: <text>:7:2: unexpected symbol\\\#\# 6: \\\#\# 7: \textbackslash{}end\\\#\# \ \ \ \ \textasciicircum{}}}\end{kframe}
+\end{knitrout}
