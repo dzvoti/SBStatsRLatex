@@ -11,13 +11,24 @@ X = 2:10
 
 # Display basic statistical measures
 summary(X)
-
 @
+
 %--------------------------------------------------------------------------------
 
 So, the mean of the data is $\Sexpr{mean(X)}$ %Inline command
 
 \clearpage
+
+<<chunk2,echo=FALSE,warning=FALSE,tidy=TRUE>>=
+# Create a sequence of numbers
+Y = 2:20
+
+# Display basic statistical measures
+summary(Y)
+@
+
+\clearpage
+
 %Plots
 %--------------------------------------------------------------------------------
 <<plot1, fig.pos="t", fig.height=4, fig.width=4, fig.cap="First plot">>=
